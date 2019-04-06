@@ -2,17 +2,21 @@ package io.zipcoder.persistenceapp.services;
 
 
 import io.zipcoder.persistenceapp.models.Department;
+import io.zipcoder.persistenceapp.models.Employee;
 import io.zipcoder.persistenceapp.repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DepartmentService {
     private DepartmentRepository repository;
+    private EmployeeService employeeService;
 
     @Autowired
-    public DepartmentService(DepartmentRepository repository) {
+    public DepartmentService(DepartmentRepository repository, @Lazy EmployeeService employeeService) {
         this.repository = repository;
+        this.employeeService = employeeService;
     }
 
     public Iterable<Department> index() {
@@ -24,6 +28,11 @@ public class DepartmentService {
     }
 
     public Department create(Department department) {
+        Employee manager = department.getDepartmentManager();
+        if (manager != null) {
+            manager = employeeService.show(manager.getEmployeeNumber());
+            department.setDepartmentManager(manager);
+        }
         return repository.save(department);
     }
 

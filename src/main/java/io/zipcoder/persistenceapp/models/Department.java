@@ -6,16 +6,19 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Department {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     Long departmentNumber;
 
-    @NotNull
     private String departmentName;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Employee departmentManager;
 
     public Department() {
+    }
+
+    public Department(String departmentNumberString) {
+        this.departmentNumber = Long.parseLong(departmentNumberString);
     }
 
     public Department(String departmentName, Employee departmentManager) {
@@ -27,26 +30,23 @@ public class Department {
         return departmentNumber;
     }
 
-    public Department setDepartmentNumber(Long departmentNumber) {
+    public void setDepartmentNumber(Long departmentNumber) {
         this.departmentNumber = departmentNumber;
-        return this;
     }
 
     public String getDepartmentName() {
         return departmentName;
     }
 
-    public Department setDepartmentName(String departmentName) {
+    public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
-        return this;
     }
 
     public Employee getDepartmentManager() {
         return departmentManager;
     }
 
-    public Department setDepartmentManager(Employee departmentManager) {
+    public void setDepartmentManager(Employee departmentManager) {
         this.departmentManager = departmentManager;
-        return this;
     }
 }

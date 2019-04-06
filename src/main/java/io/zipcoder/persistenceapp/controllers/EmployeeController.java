@@ -1,6 +1,5 @@
 package io.zipcoder.persistenceapp.controllers;
 
-import io.zipcoder.persistenceapp.builders.EmployeeBuilder;
 import io.zipcoder.persistenceapp.models.Employee;
 import io.zipcoder.persistenceapp.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +42,9 @@ public class EmployeeController {
     }
 
     @PutMapping("/employees/{id}/manager")
-    public ResponseEntity<Employee> updateManager(@PathVariable Long id, @RequestBody Long managerId) {
+    public ResponseEntity<Employee> updateManager(@PathVariable Long id, @RequestBody Employee manager) {
         Employee updatedEmployee = service.show(id);
-        updatedEmployee.setManager(service.show(managerId));
+        updatedEmployee.setManager(service.show(manager.getEmployeeNumber()));
         return new ResponseEntity<>(service.update(id, updatedEmployee), HttpStatus.OK);
     }
 

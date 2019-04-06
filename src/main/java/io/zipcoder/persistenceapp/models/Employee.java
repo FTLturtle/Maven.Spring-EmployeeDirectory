@@ -1,7 +1,5 @@
 package io.zipcoder.persistenceapp.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -9,26 +7,19 @@ import java.util.Date;
 @Entity
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     long employeeNumber;
 
-    @NotNull
     private String firstName;
 
-    @NotNull
     private String lastName;
 
-    @NotNull
     private String title;
 
-    @NotNull
     private String phoneNumber;
 
-    @NotNull
     private String email;
 
-    @NotNull
-    @JsonFormat(pattern="yyyy-MM-dd")
     private Date hireDate;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -38,6 +29,19 @@ public class Employee {
     private Department department;
 
     public Employee() {
+    }
+
+    public Employee(String employeeNumberString) {
+        this.employeeNumber = Long.parseLong(employeeNumberString);
+    }
+
+    public Employee(String firstName, String lastName, String title, String phoneNumber, String email, Date hireDate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.title = title;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.hireDate = hireDate;
     }
 
     public Employee(String firstName, String lastName, String title, String phoneNumber, String email, Date hireDate, Employee manager, Department department) {
@@ -55,80 +59,71 @@ public class Employee {
         return employeeNumber;
     }
 
-    public Employee setEmployeeNumber(long employeeNumber) {
+    public void setEmployeeNumber(long employeeNumber) {
         this.employeeNumber = employeeNumber;
-        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public Employee setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
-        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public Employee setLastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
-        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Employee setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public Employee setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public Employee setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
-        return this;
     }
 
     public Date getHireDate() {
         return hireDate;
     }
 
-    public Employee setHireDate(Date hireDate) {
+    public void setHireDate(Date hireDate) {
         this.hireDate = hireDate;
-        return this;
     }
 
     public Employee getManager() {
         return manager;
     }
 
-    public Employee setManager(Employee manager) {
+    public void setManager(Employee manager) {
         this.manager = manager;
-        return this;
     }
 
     public Department getDepartment() {
         return department;
     }
 
-    public Employee setDepartment(Department department) {
+    public void setDepartment(Department department) {
         this.department = department;
-        return this;
     }
 }
