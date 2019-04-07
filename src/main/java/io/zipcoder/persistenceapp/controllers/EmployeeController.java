@@ -16,39 +16,34 @@ public class EmployeeController {
         this.service = service;
     }
 
-    @GetMapping("/employees")
+    @GetMapping("/API/employees")
     public ResponseEntity<Iterable<Employee>> index() {
         return new ResponseEntity<>(service.index(), HttpStatus.OK);
     }
 
-    @GetMapping("/employees/{id}")
+    @GetMapping("/API/employees/{id}")
     public ResponseEntity<Employee> show(@PathVariable Long id) {
         return new ResponseEntity<>(service.show(id), HttpStatus.OK);
     }
 
-    @PostMapping("/employees")
+    @PostMapping("/API/employees")
     public ResponseEntity<Employee> create(@RequestBody Employee employee) {
         return new ResponseEntity<>(service.create(employee), HttpStatus.CREATED);
     }
 
-    @PutMapping("/employees/{id}")
+    @PutMapping("/API/employees/{id}")
     public ResponseEntity<Employee> update(@PathVariable Long id, @RequestBody Employee employee) {
-        if (service.show(id) != null) {
-            return new ResponseEntity<>(service.update(id, employee), HttpStatus.OK);
-        } else {
-            employee.setEmployeeNumber(id);
-            return create(employee);
-        }
+        return new ResponseEntity<>(service.update(id, employee), HttpStatus.OK);
     }
 
-    @PutMapping("/employees/{id}/manager")
-    public ResponseEntity<Employee> updateManager(@PathVariable Long id, @RequestBody Employee manager) {
-        Employee updatedEmployee = service.show(id);
-        updatedEmployee.setManager(service.show(manager.getEmployeeNumber()));
-        return new ResponseEntity<>(service.update(id, updatedEmployee), HttpStatus.OK);
-    }
+//    @PutMapping("/API/employees/{id}/manager")
+//    public ResponseEntity<Employee> updateManager(@PathVariable Long id, @RequestBody Employee manager) {
+//        Employee updatedEmployee = service.show(id);
+//        updatedEmployee.setManager(service.show(manager.getEmployeeNumber()));
+//        return new ResponseEntity<>(service.update(id, updatedEmployee), HttpStatus.OK);
+//    }
 
-    @DeleteMapping("/employees/{id}")
+    @DeleteMapping("/API/employees/{id}")
     public ResponseEntity<Boolean> destroy(@PathVariable Long id) {
         return new ResponseEntity<>(service.delete(id), HttpStatus.NO_CONTENT);
     }

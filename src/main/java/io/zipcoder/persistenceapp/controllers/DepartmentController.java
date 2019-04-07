@@ -16,32 +16,27 @@ public class DepartmentController {
         this.service = service;
     }
 
-    @GetMapping("/departments")
+    @GetMapping("/API/departments")
     public ResponseEntity<Iterable<Department>> index() {
         return new ResponseEntity<>(service.index(), HttpStatus.OK);
     }
 
-    @GetMapping("/departments/{id}")
+    @GetMapping("/API/departments/{id}")
     public ResponseEntity<Department> show(@PathVariable Long id) {
         return new ResponseEntity<>(service.show(id), HttpStatus.OK);
     }
 
-    @PostMapping("/departments")
+    @PostMapping("/API/departments")
     public ResponseEntity<Department> create(@RequestBody Department department) {
         return new ResponseEntity<>(service.create(department), HttpStatus.CREATED);
     }
 
-    @PutMapping("/departments/{id}")
+    @PutMapping("/API/departments/{id}")
     public ResponseEntity<Department> update(@PathVariable Long id, @RequestBody Department department) {
-        if (service.show(id) != null) {
-            return new ResponseEntity<>(service.update(id, department), HttpStatus.OK);
-        } else {
-            department.setDepartmentNumber(id);
-            return create(department);
-        }
+        return new ResponseEntity<>(service.update(id, department), HttpStatus.OK);
     }
 
-    @DeleteMapping("/departments/{id}")
+    @DeleteMapping("/API/departments/{id}")
     public ResponseEntity<Boolean> destroy(@PathVariable Long id) {
         return new ResponseEntity<>(service.delete(id), HttpStatus.NO_CONTENT);
     }

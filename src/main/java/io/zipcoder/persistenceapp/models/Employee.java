@@ -10,22 +10,28 @@ public class Employee {
     @GeneratedValue
     long employeeNumber;
 
+    @NotNull
     private String firstName;
 
+    @NotNull
     private String lastName;
 
+    @NotNull
     private String title;
 
+    @NotNull
     private String phoneNumber;
 
+    @NotNull
     private String email;
 
+    @NotNull
     private Date hireDate;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     private Employee manager;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     private Department department;
 
     public Employee() {
@@ -33,26 +39,6 @@ public class Employee {
 
     public Employee(String employeeNumberString) {
         this.employeeNumber = Long.parseLong(employeeNumberString);
-    }
-
-    public Employee(String firstName, String lastName, String title, String phoneNumber, String email, Date hireDate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.title = title;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.hireDate = hireDate;
-    }
-
-    public Employee(String firstName, String lastName, String title, String phoneNumber, String email, Date hireDate, Employee manager, Department department) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.title = title;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.hireDate = hireDate;
-        this.manager = manager;
-        this.department = department;
     }
 
     public long getEmployeeNumber() {

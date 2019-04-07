@@ -1,5 +1,7 @@
 package io.zipcoder.persistenceapp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -9,9 +11,11 @@ public class Department {
     @GeneratedValue
     Long departmentNumber;
 
+    @NotNull
     private String departmentName;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne
+    @JsonBackReference
     private Employee departmentManager;
 
     public Department() {
@@ -19,11 +23,6 @@ public class Department {
 
     public Department(String departmentNumberString) {
         this.departmentNumber = Long.parseLong(departmentNumberString);
-    }
-
-    public Department(String departmentName, Employee departmentManager) {
-        this.departmentName = departmentName;
-        this.departmentManager = departmentManager;
     }
 
     public Long getDepartmentNumber() {
