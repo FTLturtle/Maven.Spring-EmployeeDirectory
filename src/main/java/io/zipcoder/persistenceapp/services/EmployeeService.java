@@ -39,15 +39,10 @@ public class EmployeeService {
             throw new NoSuchElementException();
 
         newEmployeeData.setEmployeeNumber(id);
-
         updateDepartmentAndManagerWithDbData(newEmployeeData);
-
-        Employee oldEmployeeData = repository.findOne(id);
-
-        if (!Objects.equals(newEmployeeData.getDepartment(), oldEmployeeData.getDepartment())) {
+        if (!Objects.equals(newEmployeeData.getDepartment(), repository.findOne(id).getDepartment())) {
             updateSubordinatesDepartments(newEmployeeData);
         }
-
         return repository.save(newEmployeeData);
     }
 
@@ -77,7 +72,19 @@ public class EmployeeService {
     }
 
     public Boolean delete(Long id) {
+        updateSubordinatesManagersWithManagersManager(repository.findOne(id));
         repository.delete(id);
         return true;
+    }
+
+    private void updateSubordinatesManagersWithManagersManager(Employee managerToDelete) {
+        List<Employee> subordinates = repository.findEmployeesByManager_EmployeeNumber(managerToDelete.getEmployeeNumber());
+        if (subordinates.size() > 0) {
+            for (Employee subordinate : subordinates) {
+                subordinate.setManager(managerToDelete.getManager());
+                repository.save(subordinate);
+                updateSubordinatesManagersWithManagersManager(subordinate);
+            }
+        }
     }
 }
