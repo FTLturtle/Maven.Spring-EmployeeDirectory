@@ -39,23 +39,9 @@ public class EmployeeService {
             throw new NoSuchElementException("No employee exists with that Id");
         newEmployeeData.setEmployeeNumber(id);
         updateDepartmentAndManagerWithDbData(newEmployeeData);
-        if (isSubordinateDepartmentUpdateNeeded(newEmployeeData)) {
-            updateSubordinatesDepartments(newEmployeeData);
-        }
+        updateSubordinatesDepartments(newEmployeeData);
+
         return repository.save(newEmployeeData);
-    }
-
-    private boolean isSubordinateDepartmentUpdateNeeded(Employee manager) {
-        boolean result;
-        List<Employee> subordinates = repository.findEmployeesByManager_EmployeeNumber(manager.getEmployeeNumber());
-
-        if (subordinates.size() == 0) {
-            result = false;
-        } else {
-            result = !Objects.equals(manager.getDepartment(), subordinates.get(0).getDepartment());
-        }
-
-        return result;
     }
 
     private void updateDepartmentAndManagerWithDbData(Employee newEmployeeData) {
@@ -74,13 +60,25 @@ public class EmployeeService {
 
     private void updateSubordinatesDepartments(Employee manager) {
         List<Employee> subordinates = repository.findEmployeesByManager_EmployeeNumber(manager.getEmployeeNumber());
-        if (subordinates.size() > 0) {
+        if (isSubordinateDepartmentUpdateNeeded(manager, subordinates)) {
             for (Employee subordinate : subordinates) {
                 subordinate.setDepartment(manager.getDepartment());
                 repository.save(subordinate);
                 updateSubordinatesDepartments(subordinate);
             }
         }
+    }
+
+    private boolean isSubordinateDepartmentUpdateNeeded(Employee manager, List<Employee> subordinates) {
+        boolean result;
+
+        if (subordinates.size() == 0) {
+            result = false;
+        } else {
+            result = !Objects.equals(manager.getDepartment(), subordinates.get(0).getDepartment());
+        }
+
+        return result;
     }
 
     public Boolean delete(Long id) {

@@ -38,6 +38,7 @@ public class DepartmentService {
 
         if (manager != null) {
             manager.setDepartment(savedDepartment);
+            manager.setManager(null);
             employeeService.update(manager.getEmployeeNumber(), manager);
         }
 
