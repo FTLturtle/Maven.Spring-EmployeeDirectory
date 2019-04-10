@@ -33,7 +33,15 @@ public class DepartmentService {
             manager = employeeService.show(manager.getEmployeeNumber());
             department.setDepartmentManager(manager);
         }
-        return repository.save(department);
+
+        Department savedDepartment = repository.save(department);
+
+        if (manager != null) {
+            manager.setDepartment(savedDepartment);
+            employeeService.update(manager.getEmployeeNumber(), manager);
+        }
+
+        return savedDepartment;
     }
 
     public Department update(Long id, Department newDepartmentData) {

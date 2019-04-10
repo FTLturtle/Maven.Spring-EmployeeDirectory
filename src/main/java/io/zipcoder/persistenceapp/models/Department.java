@@ -22,7 +22,11 @@ public class Department {
     }
 
     public Department(String departmentNumberString) {
-        this.departmentNumber = Long.parseLong(departmentNumberString);
+        this(Long.parseLong(departmentNumberString));
+    }
+
+    public Department(Long id) {
+        this.departmentNumber = id;
     }
 
     public Long getDepartmentNumber() {

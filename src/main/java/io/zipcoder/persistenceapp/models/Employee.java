@@ -38,7 +38,11 @@ public class Employee {
     }
 
     public Employee(String employeeNumberString) {
-        this.employeeNumber = Long.parseLong(employeeNumberString);
+        this(Long.parseLong(employeeNumberString));
+    }
+
+    public Employee(Long id) {
+        this.employeeNumber = id;
     }
 
     public long getEmployeeNumber() {

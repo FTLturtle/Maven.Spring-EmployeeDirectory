@@ -36,14 +36,26 @@ public class EmployeeService {
 
     public Employee update(Long id, Employee newEmployeeData) {
         if (!repository.exists(id))
-            throw new NoSuchElementException();
-
+            throw new NoSuchElementException("No employee exists with that Id");
         newEmployeeData.setEmployeeNumber(id);
         updateDepartmentAndManagerWithDbData(newEmployeeData);
-        if (!Objects.equals(newEmployeeData.getDepartment(), repository.findOne(id).getDepartment())) {
+        if (isSubordinateDepartmentUpdateNeeded(newEmployeeData)) {
             updateSubordinatesDepartments(newEmployeeData);
         }
         return repository.save(newEmployeeData);
+    }
+
+    private boolean isSubordinateDepartmentUpdateNeeded(Employee manager) {
+        boolean result;
+        List<Employee> subordinates = repository.findEmployeesByManager_EmployeeNumber(manager.getEmployeeNumber());
+
+        if (subordinates.size() == 0) {
+            result = false;
+        } else {
+            result = !Objects.equals(manager.getDepartment(), subordinates.get(0).getDepartment());
+        }
+
+        return result;
     }
 
     private void updateDepartmentAndManagerWithDbData(Employee newEmployeeData) {
