@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("/API")
 public class EmployeeController {
     private EmployeeService service;
 
@@ -16,22 +16,22 @@ public class EmployeeController {
         this.service = service;
     }
 
-    @GetMapping("/API/employees")
+    @GetMapping("/employees")
     public ResponseEntity<Iterable<Employee>> index() {
         return new ResponseEntity<>(service.index(), HttpStatus.OK);
     }
 
-    @GetMapping("/API/employees/{id}")
+    @GetMapping("/employees/{id}")
     public ResponseEntity<Employee> show(@PathVariable Long id) {
         return new ResponseEntity<>(service.show(id), HttpStatus.OK);
     }
 
-    @PostMapping("/API/employees")
+    @PostMapping("/employees")
     public ResponseEntity<Employee> create(@RequestBody Employee employee) {
         return new ResponseEntity<>(service.create(employee), HttpStatus.CREATED);
     }
 
-    @PutMapping("/API/employees/{id}")
+    @PutMapping("/employees/{id}")
     public ResponseEntity<Employee> update(@PathVariable Long id, @RequestBody Employee employee) {
         return new ResponseEntity<>(service.update(id, employee), HttpStatus.OK);
     }
@@ -43,7 +43,7 @@ public class EmployeeController {
 //        return new ResponseEntity<>(service.update(id, updatedEmployee), HttpStatus.OK);
 //    }
 
-    @DeleteMapping("/API/employees/{id}")
+    @DeleteMapping("/employees/{id}")
     public ResponseEntity<Boolean> destroy(@PathVariable Long id) {
         return new ResponseEntity<>(service.delete(id), HttpStatus.NO_CONTENT);
     }
